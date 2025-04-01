@@ -86,5 +86,7 @@
                    END-EXEC
 
               EXEC CICS RETURN
+                   COMMAREA(WS-SESSION-STATE)
+                   TRANSID(EIBTRNID)
                    END-EXEC
            END-IF.
