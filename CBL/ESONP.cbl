@@ -18,7 +18,7 @@
           05 WS-USER-ID        PIC X(8).
           05 WS-USER-PASSWORD  PIC X(8).
       ******************************************************************
-      *   EXPLICITLY DEFINE THE COMM-AREA FOR THE TRASACTION.
+      *   EXPLICITLY DEFINE THE COMM-AREA FOR THE TRANSACTION.
       ******************************************************************
        LINKAGE SECTION.
        01 DFHCOMMAREA          PIC X(16).
@@ -52,18 +52,28 @@
       *       THIS IS THE CONTINUATION OF THE CONVERSATION,
       *       MEANING THE SECOND INTERACTION OF THE PROCESS,
       *       HENCE THE COMM-AREA IS NOT EMPTY.
+
+      *       RESTORE PREVIOUS SESSION DATA INTO MY VARS
+              MOVE DFHCOMMAREA TO WS-SESSION-STATE
+
+      *       GET INPUT FROM USER
               EXEC CICS RECEIVE
                    MAP('ESONM')
                    MAPSET('ESONMAP')
                    INTO (ESONMI)
                    END-EXEC
 
-      *       RESTORE SESSION DATA INTO WORKING STORAGE
-              MOVE DFHCOMMAREA TO WS-SESSION-STATE
+      *       IF NEW DATA WAS SENT, UPDATE STATE
+              IF USERIDI IS NOT EQUAL TO LOW-VALUES
+                 MOVE USERIDI TO WS-USER-ID
+              END-IF
+              IF PASSWDI IS NOT EQUAL TO LOW-VALUES
+                 MOVE PASSWDI TO WS-USER-PASSWORD
+              END-IF
 
-      *       THEN, IT SENDS THE MAP BACK WITH A GREETING
+      *       SEND THE MAP BACK WITH A GREETING!
               STRING "Hello " DELIMITED BY SIZE
-                     USERIDI DELIMITED BY SPACE
+                     WS-USER-ID DELIMITED BY SPACE
                      "!" DELIMITED BY SIZE
                  INTO MESSO
               END-STRING
