@@ -74,12 +74,19 @@
       *    HENCE THE COMM-AREA IS NOT EMPTY
            PERFORM 2100-RESTORE-STATE.
            PERFORM 2200-RECEIVE-MAP.
-           PERFORM 2300-UPDATE-STATE.
-           PERFORM 2400-MAKE-GREETING.
 
-      *    SEND THE MAP BACK WITH A GREETING
-           PERFORM 1200-SEND-MAP.
-           PERFORM 2500-RETURN-AND-END.
+      *    CHECK PRESSED KEY
+           EVALUATE EIBAID  
+           WHEN DFHENTER  
+                PERFORM 2300-SIGN-ON-USER
+           WHEN DFHPF3
+           WHEN DFHPF12
+                PERFORM 2400-CANCEL-PROCESS
+           WHEN OTHER
+                PERFORM 2500-SEND-MESSAGE
+           END-EVALUATE.
+
+           PERFORM 2600-RETURN-AND-END.
 
        2100-RESTORE-STATE.
       *    RESTORE PREVIOUS SESSION DATA INTO MY LOCAL VARS
@@ -93,7 +100,7 @@
                 INTO (ESONMI)
                 END-EXEC.
 
-       2300-UPDATE-STATE.
+       2300-SIGN-ON-USER.
       *    IF NEW DATA WAS RECEIVED, UPDATE STATE
            IF USERIDI IS NOT EQUAL TO LOW-VALUES
               MOVE USERIDI TO WS-USER-ID
@@ -102,7 +109,6 @@
               MOVE PASSWDI TO WS-USER-PASSWORD
            END-IF.
 
-       2400-MAKE-GREETING.
       *    GREET THE USER WITH A MESSAGE
            INITIALIZE MESSO.
 
@@ -111,9 +117,22 @@
                   "!" DELIMITED BY SIZE
               INTO MESSO
            END-STRING.
+
+           PERFORM 1200-SEND-MAP.
            
-       2500-RETURN-AND-END.
-      *    THIS ENDS THE CICS CONVERSATION
+       2400-CANCEL-PROCESS.
+      *    CLEAR SCREEN
+           EXEC CICS SEND CONTROL
+                ERASE
+                END-EXEC.
+
+       2500-SEND-MESSAGE.
+      *    SEND INVALID KEY MESSAGE TO THE USER      
+           INITIALIZE MESSO.
+           MOVE "Invalid key pressed!" TO MESSO.
+           PERFORM 1200-SEND-MAP.
+
+       2600-RETURN-AND-END.
+      *    END CICS CONVERSATION
            EXEC CICS RETURN
                 END-EXEC.
-                
