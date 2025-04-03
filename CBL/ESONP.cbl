@@ -2,14 +2,16 @@
        PROGRAM-ID. ESONP.
       ******************************************************************
       *   CICS PLURALSIGHT 'EMPLOYE APP'
-      *      - 'SIGN IN' PROGRAM
+      *      - 'SIGN ON' PROGRAM
       ******************************************************************
        DATA DIVISION.
        WORKING-STORAGE SECTION.
       ******************************************************************
       *   INCLUDE MY SYMBOLIC MAP COPYBOOK AND IBM'S AID KEYS' ONE.
       ******************************************************************
+       COPY ESONP.
        COPY ESONMAP.
+       COPY EREGUSR.
        COPY DFHAID.
       ******************************************************************
       *   DEFINE MY SESSION STATE DATA FOR PASSING INTO COMM-AREA.
@@ -54,8 +56,8 @@
        1200-SEND-MAP.
       *    SENDS MAP TO THE USER
            EXEC CICS SEND
-                MAP('ESONM')
-                MAPSET('ESONMAP')
+                MAP(AC-MAP-NAME)
+                MAPSET(AC-MAPSET-NAME)
                 FROM (ESONMO)
                 ERASE
                 END-EXEC.
@@ -95,8 +97,8 @@
        2200-RECEIVE-MAP.
       *    GET INPUT FROM THE USER
            EXEC CICS RECEIVE
-                MAP('ESONM')
-                MAPSET('ESONMAP')
+                MAP(AC-MAP-NAME)
+                MAPSET(AC-MAPSET-NAME)
                 INTO (ESONMI)
                 END-EXEC.
 
