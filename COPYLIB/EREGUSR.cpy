@@ -2,13 +2,13 @@
       *   CICS PLURALSIGHT 'EMPLOYE APP'
       *      - RECORD LAYOUT FOR 'EREGUSR' VSAM FILE.
       ******************************************************************
-       01 EREGUSR-REC.
-          05 ER-USER-ID              PIC X(8).
-          05 ER-USER-PASSWORD        PIC X(8).
-          05 ER-USER-TYPE            PIC X(3).
-          05 ER-STATUS               PIC X(1).
-          05 ER-LAST-EFFECTIVE-DATE  PIC X(14).
-          05 ER-LED REDEFINES ER-LAST-EFFECTIVE-DATE.
-             10 ER-LED-DATE          PIC X(8).
-             10 ER-LED-TIME          PIC X(6).
+       01 REG-USER-RECORD.
+          05 RU-USER-ID              PIC X(8).
+          05 RU-USER-PASSWORD        PIC X(8).
+          05 RU-USER-TYPE            PIC X(3).
+          05 RU-STATUS               PIC X(1).
+          05 RU-LAST-EFFECTIVE-DATE  PIC X(14).
+          05 RU-LED REDEFINES RU-LAST-EFFECTIVE-DATE.
+             10 RU-LED-DATE          PIC X(8).
+             10 RU-LED-TIME          PIC X(6).
           05 FILLER                  PIC X(66).

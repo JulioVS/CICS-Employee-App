@@ -19,6 +19,8 @@
        01 WS-SESSION-STATE.
           05 WS-USER-ID        PIC X(8).
           05 WS-USER-PASSWORD  PIC X(8).
+       01 WS-READ-RESP         PIC S9(8) USAGE IS COMPUTATIONAL.
+       01 WS-CURRENT-DATE      PIC X(14).
       ******************************************************************
       *   EXPLICITLY DEFINE THE COMM-AREA FOR THE TRANSACTION.
       ******************************************************************
@@ -103,6 +105,11 @@
                 END-EXEC.
 
        2300-SIGN-ON-USER.
+           PERFORM 2310-UPDATE-STATE.
+           PERFORM 2320-GREET-USER.
+           PERFORM 2330-LOOKUP-USER-ID.
+
+       2310-UPDATE-STATE.
       *    IF NEW DATA WAS RECEIVED, UPDATE STATE
            IF USERIDI IS NOT EQUAL TO LOW-VALUES
               MOVE USERIDI TO WS-USER-ID
@@ -111,17 +118,51 @@
               MOVE PASSWDI TO WS-USER-PASSWORD
            END-IF.
 
+       2320-GREET-USER.
       *    GREET THE USER WITH A MESSAGE
            INITIALIZE MESSO.
-
            STRING "Hello " DELIMITED BY SIZE
                   WS-USER-ID DELIMITED BY SPACE
                   "!" DELIMITED BY SIZE
               INTO MESSO
            END-STRING.
+      *    PERFORM 1200-SEND-MAP.
+           
+       2330-LOOKUP-USER-ID.
+           EXEC CICS READ
+                FILE(AC-FILE-NAME)
+                INTO (REG-USER-RECORD)
+                RIDFLD(WS-USER-ID)
+                RESP(WS-READ-RESP)
+                END-EXEC.
+
+           MOVE FUNCTION CURRENT-DATE(1:14) TO WS-CURRENT-DATE.
+           INITIALIZE MESSO.
+                
+           EVALUATE WS-READ-RESP
+           WHEN DFHRESP(NORMAL)
+                IF RU-USER-PASSWORD IS EQUAL TO WS-USER-PASSWORD
+                   IF RU-STATUS IS EQUAL TO "A"
+                      IF RU-LAST-EFFECTIVE-DATE IS LESS THAN
+                         OR EQUAL TO WS-CURRENT-DATE 
+                         MOVE "User authenticated!" TO MESSO
+                      ELSE
+                         MOVE "User not yet available!" TO MESSO
+                      END-IF
+                   ELSE
+                      MOVE "User is inactive!" TO MESSO
+                   END-IF
+                ELSE
+                   MOVE "Invalid password!" TO MESSO
+                END-IF
+           WHEN DFHRESP(NOTFND)
+                MOVE "User not found!" TO MESSO
+           WHEN OTHER
+                MOVE "Error reading user data!" TO MESSO 
+           END-EVALUATE.
 
            PERFORM 1200-SEND-MAP.
-           
+
        2400-CANCEL-PROCESS.
       *    CLEAR SCREEN
            EXEC CICS SEND CONTROL

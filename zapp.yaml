@@ -1,7 +1,7 @@
-name: Generated ZAPP document
+name: IBM Z Workspace ZAPP document
 description: >-
   https://ibm.github.io/zopeneditor-about/Docs/setting_propertygroup.html
-author: IBM Z Open Editor
+author: IBM Z Open Editor & JE
 propertyGroups:
   - name: cobol-copybooks
     language: cobol
@@ -10,14 +10,11 @@ propertyGroups:
         type: local
         locations:
           - './COPYLIB'
-      - name: MYLIB
-        type: mvs
-        locations:
-          - 'Z45864.COPYLIB'
-      - name: SYSLIB
+      - name: mylib
         type: mvs
         locations:
           - 'DFH620.CICS.SDFHCOB'
+          - 'Z45864.COPYLIB'
   - name: jcl-proclibs
     language: jcl
     libraries:
@@ -25,8 +22,18 @@ propertyGroups:
         type: local
         locations:
           - './PROCLIB'
-      - name: SYSLIB
+      - name: syslib
         type: mvs
         locations:
-          - 'VENDOR.PROCLIB'
           - 'DFH620.CICS.SDFHPROC'
+          - 'VENDOR.PROCLIB'
+          - 'SYS1.PROCLIB'
+  - name: hlasm-maclibs
+    language: hlasm
+    libraries:
+      - name: maclib
+        type: mvs
+        locations:
+          - 'DFH620.CICS.SDFHMAC'
+          - 'SYS1.MACLIB'
+          
