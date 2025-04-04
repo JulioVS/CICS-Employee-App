@@ -129,6 +129,8 @@
       *    PERFORM 1200-SEND-MAP.
            
        2330-LOOKUP-USER-ID.
+      *    LOOKUP THE USER ID IN THE VSAM FILE
+      *    (MINE IS 'Z45864.PSVS.EREGUSR' AS REGISTERED IN CICS)
            EXEC CICS READ
                 FILE(AC-FILE-NAME)
                 INTO (REG-USER-RECORD)
@@ -142,7 +144,7 @@
            EVALUATE WS-READ-RESP
            WHEN DFHRESP(NORMAL)
                 IF RU-USER-PASSWORD IS EQUAL TO WS-USER-PASSWORD
-                   IF RU-STATUS IS EQUAL TO "A"
+                   IF RU-IS-ACTIVE
                       IF RU-LAST-EFFECTIVE-DATE IS LESS THAN
                          OR EQUAL TO WS-CURRENT-DATE 
                          MOVE "User authenticated!" TO MESSO
@@ -170,7 +172,7 @@
                 END-EXEC.
 
        2500-SEND-MESSAGE.
-      *    SEND INVALID KEY MESSAGE TO THE USER      
+      *    SEND 'INVALID KEY' MESSAGE TO THE USER      
            INITIALIZE MESSO.
            MOVE "Invalid key pressed!" TO MESSO.
            PERFORM 1200-SEND-MAP.
