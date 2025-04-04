@@ -1,5 +1,5 @@
       ******************************************************************
-      *   CICS PLURALSIGHT 'EMPLOYE APP'
+      *   CICS PLURALSIGHT 'EMPLOYEE APP'
       *      - RECORD LAYOUT FOR 'ESONRUL' VSAM FILE.
       *        (SIGN-ON RULES)
       ******************************************************************

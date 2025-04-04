@@ -1,5 +1,5 @@
       ******************************************************************
-      *   CICS PLURALSIGHT 'EMPLOYE APP'
+      *   CICS PLURALSIGHT 'EMPLOYEE APP'
       *      - RECORD LAYOUT FOR 'EREGUSR' VSAM FILE.
       *        (REGISTERED USERS)
       ******************************************************************

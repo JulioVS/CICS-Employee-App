@@ -9,7 +9,7 @@
       ******************************************************************
       *   INCLUDE MY SYMBOLIC MAP COPYBOOK AND IBM'S AID KEYS' ONE.
       ******************************************************************
-       COPY ESONP.
+       COPY ECONST.
        COPY ESONMAP.
        COPY EREGUSR.
        COPY DFHAID.
@@ -58,8 +58,8 @@
        1200-SEND-MAP.
       *    SENDS MAP TO THE USER
            EXEC CICS SEND
-                MAP(AC-MAP-NAME)
-                MAPSET(AC-MAPSET-NAME)
+                MAP(AC-SIGNON-MAP-NAME)
+                MAPSET(AC-SIGNON-MAPSET-NAME)
                 FROM (ESONMO)
                 ERASE
                 END-EXEC.
@@ -99,8 +99,8 @@
        2200-RECEIVE-MAP.
       *    GET INPUT FROM THE USER
            EXEC CICS RECEIVE
-                MAP(AC-MAP-NAME)
-                MAPSET(AC-MAPSET-NAME)
+                MAP(AC-SIGNON-MAP-NAME)
+                MAPSET(AC-SIGNON-MAPSET-NAME)
                 INTO (ESONMI)
                 END-EXEC.
 
@@ -132,7 +132,7 @@
       *    LOOKUP THE USER ID IN THE VSAM FILE
       *    (MINE IS 'Z45864.PSVS.EREGUSR' AS REGISTERED IN CICS)
            EXEC CICS READ
-                FILE(AC-FILE-NAME)
+                FILE(AC-REG-USER-FILENAME)
                 INTO (REG-USER-RECORD)
                 RIDFLD(WS-USER-ID)
                 RESP(WS-READ-RESP)
