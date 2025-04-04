@@ -1,6 +1,7 @@
       ******************************************************************
       *   CICS PLURALSIGHT 'EMPLOYE APP'
       *      - RECORD LAYOUT FOR 'EREGUSR' VSAM FILE.
+      *        (REGISTERED USERS)
       ******************************************************************
        01 REG-USER-RECORD.
           05 RU-USER-ID              PIC X(8).
