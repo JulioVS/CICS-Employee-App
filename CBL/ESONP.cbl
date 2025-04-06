@@ -19,7 +19,7 @@
        01 WS-SESSION-STATE.
           05 WS-USER-ID        PIC X(8).
           05 WS-USER-PASSWORD  PIC X(8).
-       01 WS-READ-RESP         PIC S9(8) USAGE IS COMPUTATIONAL.
+       01 WS-CICS-RESPONSE     PIC S9(8) USAGE IS COMPUTATIONAL.
        01 WS-CURRENT-DATE      PIC X(14).
       ******************************************************************
       *   EXPLICITLY DEFINE THE COMM-AREA FOR THE TRANSACTION.
@@ -135,13 +135,13 @@
                 FILE(AC-REG-USER-FILENAME)
                 INTO (REG-USER-RECORD)
                 RIDFLD(WS-USER-ID)
-                RESP(WS-READ-RESP)
+                RESP(WS-CICS-RESPONSE)
                 END-EXEC.
 
            MOVE FUNCTION CURRENT-DATE(1:14) TO WS-CURRENT-DATE.
            INITIALIZE MESSO.
                 
-           EVALUATE WS-READ-RESP
+           EVALUATE WS-CICS-RESPONSE
            WHEN DFHRESP(NORMAL)
                 IF RU-USER-PASSWORD IS EQUAL TO WS-USER-PASSWORD
                    IF RU-IS-ACTIVE

@@ -14,6 +14,6 @@
              88 UA-IS-LOCKED-OUT                  VALUE 'L'.
              88 UA-IS-SIGNED-ON                   VALUE 'S'.
           05 UA-RETRY-NUMBER            PIC 9(2).
-          05 UA-LAST-ACTIVITY-TIMESTAMP PIC X(14).
+          05 UA-LAST-ACTIVITY-TIMESTAMP.
              10 UA-LAST-ACTIVITY-DATE   PIC X(8).
              10 UA-LAST-ACTIVITY-TIME   PIC X(6).
