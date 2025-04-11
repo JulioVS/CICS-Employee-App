@@ -19,6 +19,7 @@
        01 WS-SESSION-STATE.
           05 WS-USER-ID        PIC X(8).
           05 WS-USER-PASSWORD  PIC X(8).
+      *   
        01 WS-CICS-RESPONSE     PIC S9(8) USAGE IS COMPUTATIONAL.
        01 WS-CURRENT-DATE      PIC X(14).
       ******************************************************************
@@ -132,7 +133,7 @@
       *    LOOKUP THE USER ID IN THE VSAM FILE
       *    (MINE IS 'Z45864.PSVS.EREGUSR' AS REGISTERED IN CICS)
            EXEC CICS READ
-                FILE(AC-REG-USER-FILENAME)
+                FILE(AC-REG-USER-FILE-NAME)
                 INTO (REG-USER-RECORD)
                 RIDFLD(WS-USER-ID)
                 RESP(WS-CICS-RESPONSE)
@@ -144,7 +145,7 @@
            EVALUATE WS-CICS-RESPONSE
            WHEN DFHRESP(NORMAL)
                 IF RU-USER-PASSWORD IS EQUAL TO WS-USER-PASSWORD
-                   IF RU-IS-ACTIVE
+                   IF RU-ST-ACTIVE
                       IF RU-LAST-EFFECTIVE-DATE IS LESS THAN
                          OR EQUAL TO WS-CURRENT-DATE 
                          MOVE "User authenticated!" TO MESSO
